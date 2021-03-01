@@ -49,13 +49,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="TextView"
+            android:text="@string/welcome"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
 
         <TextView
-            android:id="@+id/lbl_balance"
+            android:id="@+id/txt_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -66,16 +66,16 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_welcome" />
 
         <TextView
-            android:id="@+id/txt_balance"
+            android:id="@+id/txt_balanceValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="TextView"
+            android:text="$ 0.00"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_balance" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_balance" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
