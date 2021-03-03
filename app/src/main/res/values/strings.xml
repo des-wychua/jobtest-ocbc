@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OCBC App</string>
     <string name="btn_logout">Logout</string>
-    <string name="btn_transfer">Transfer</string>
+    <string name="btn_pay">Pay</string>
     <string name="btn_topup">Top Up</string>
     <string name="btn_login_register">Login or Register</string>
     <string name="lbl_balance">Your balance:</string>

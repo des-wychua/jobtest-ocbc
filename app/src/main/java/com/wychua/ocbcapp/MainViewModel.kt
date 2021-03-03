@@ -1,29 +1,33 @@
 package com.wychua.ocbcapp
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.wychua.ocbcapp.data.UserRepository
 import com.wychua.ocbcapp.data.model.User
 import java.util.*
 
 
-// TODO: change to user id
-class MainViewModel(val name: String) : ViewModel() {
+class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _loggedInUser = MutableLiveData<User?>()
     val loggedInUser: LiveData<User?>
         get() = _loggedInUser
 
-    init {
-        if (name.isBlank()) {
-            _loggedInUser.value = null
-        } else {
-            // TODO: get user from database
-            _loggedInUser.value = User(UUID.randomUUID().toString(), name, 0.0)
-        }
+    fun onLoggedInUser(user: User?) {
+        _loggedInUser.value = user
+    }
+
+    fun getLoggedInUser(userId: String): LiveData<List<User>> {
+        return repository.getUserByUserId(userId)
     }
 
     fun logout() {
         _loggedInUser.value = null
+    }
+
+    fun refreshUserData() {
+
     }
 }

@@ -1,10 +1,12 @@
 package com.wychua.ocbcapp.data.model
 
-/**
- * Data class that captures user information for logged in users retrieved from LoginRepository
- */
-data class User(
-    val userId: String,
-    val name: String,
-    val balance: Double
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "user_table")
+class User(
+    @PrimaryKey @ColumnInfo(name = "userID") val userId: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "balance") val balance: Double
 )

@@ -1,4 +1,4 @@
-package com.wychua.ocbcapp
+package com.wychua.ocbcapp.ui.login
 
 /**
  * Data validation state of the login form.

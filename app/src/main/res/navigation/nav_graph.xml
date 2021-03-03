@@ -11,8 +11,8 @@
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_transferFragment"
-            app:destination="@id/transferFragment"/>
+            android:id="@+id/action_mainFragment_to_payFragment"
+            app:destination="@id/payFragment"/>
         <action
             android:id="@+id/action_mainFragment_to_topupFragment"
             app:destination="@id/topupFragment"/>
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.wychua.ocbcapp.LoginFragment"
+        android:name="com.wychua.ocbcapp.ui.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -48,10 +48,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/transferFragment"
-        android:name="com.wychua.ocbcapp.TransferFragment"
-        android:label="TransferFragment"
-        tools:layout="@layout/fragment_transfer">
+        android:id="@+id/payFragment"
+        android:name="com.wychua.ocbcapp.PayFragment"
+        android:label="PayFragment"
+        tools:layout="@layout/fragment_pay">
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue=""/>
     </fragment>
 
     <fragment
@@ -59,6 +63,10 @@
         android:name="com.wychua.ocbcapp.TopUpFragment"
         android:label="TopUpFragment"
         tools:layout="@layout/fragment_topup">
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue=""/>
     </fragment>
 
 </navigation>

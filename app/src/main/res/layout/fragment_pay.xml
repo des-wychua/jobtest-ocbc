@@ -16,11 +16,11 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/lbl_transferquestion"
+            app:layout_constraintStart_toEndOf="@+id/lbl_payquestion"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/lbl_transferquestion"
+            android:id="@+id/lbl_payquestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/edit_transferamount"
+            android:id="@+id/edit_payamount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -47,17 +47,17 @@
             app:layout_constraintTop_toBottomOf="@+id/spinner_userlist" />
 
         <Button
-            android:id="@+id/btn_transfer_action"
+            android:id="@+id/btn_pay_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="46dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/btn_transfer"
+            android:text="@string/btn_pay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_transferamount"
-            tools:text="@string/btn_transfer" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_payamount"
+            tools:text="@string/btn_pay" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

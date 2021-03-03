@@ -1,4 +1,4 @@
-package com.wychua.ocbcapp
+package com.wychua.ocbcapp.ui.login
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -7,25 +7,28 @@ import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.wychua.ocbcapp.*
 
-import com.wychua.ocbcapp.R
 import com.wychua.ocbcapp.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var loginViewModelFactory: LoginViewModelFactory
+
+    companion object {
+        val TAG = "LoginFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +48,10 @@ class LoginFragment : Fragment() {
             requireActivity().finish()
         }
 
-        loginViewModel = ViewModelProvider(this)
+        loginViewModelFactory =
+            LoginViewModelFactory((requireActivity().application as BankApplication).repository)
+
+        loginViewModel = ViewModelProvider(this, loginViewModelFactory)
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
@@ -65,9 +71,17 @@ class LoginFragment : Fragment() {
                 binding.loading.visibility = View.GONE
                 loginResult.error?.let {
                     showLoginFailed(it)
+                    Log.i(TAG, "login failed")
                 }
                 loginResult.success?.let {
-                    findNavController().navigate(LoginFragmentDirections.actionAuthorised(balance = it.balance.toFloat(), name = it.name, userId = it.userId))
+                    findNavController().navigate(
+                        LoginFragmentDirections.actionAuthorised(
+                            balance = it.balance.toFloat(),
+                            name = it.name,
+                            userId = it.userId
+                        )
+                    )
+                    Log.i(TAG, "login success")
                 }
             })
 
@@ -89,23 +103,29 @@ class LoginFragment : Fragment() {
         binding.editUsername.addTextChangedListener(afterTextChangedListener)
         binding.editUsername.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(
-                    binding.editUsername.text.toString()
-                )
+                login(binding.editUsername.text.toString())
             }
             false
         }
 
         binding.btnLogin.setOnClickListener {
             binding.loading.visibility = View.VISIBLE
-            loginViewModel.login(
-                binding.editUsername.text.toString()
-            )
+            login(binding.editUsername.text.toString())
         }
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    }
+
+    private fun login(name: String) {
+        loginViewModel.getUserByName(name).observe(viewLifecycleOwner, Observer { users ->
+            if (users != null && users.isNotEmpty()) {
+                loginViewModel.login(users[0])
+            } else {
+                loginViewModel.register(name)
+            }
+        })
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -28,36 +29,55 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
-
-        binding.btnTopup.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToTopupFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.btnTransfer.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToTransferFragment()
-            findNavController().navigate(action)
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModelFactory = MainViewModelFactory(MainFragmentArgs.fromBundle(requireArguments()).name)
+        mainViewModelFactory = MainViewModelFactory(
+            (requireActivity().application as BankApplication).repository
+        )
 
         mainViewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
+
+        mainViewModel.getLoggedInUser(MainFragmentArgs.fromBundle(requireArguments()).userId).observe(viewLifecycleOwner, Observer { users ->
+            if (users != null && users.isNotEmpty()) {
+                mainViewModel.onLoggedInUser(users[0])
+            } else {
+                mainViewModel.onLoggedInUser(null)
+            }
+        })
 
         mainViewModel.loggedInUser.observe(viewLifecycleOwner, Observer { user ->
             if (user != null) {
                 binding.txtWelcome.text = getString(R.string.welcome) + " " + user.name
                 binding.txtBalanceValue.text = "$ " + String.format("%.2f", user.balance)
-                binding.btnLogout.setOnClickListener{
+
+                Log.i(TAG, user.balance.toString())
+
+                binding.btnTopup.setOnClickListener {
+                    val action =
+                        MainFragmentDirections.actionMainFragmentToTopupFragment(user.userId)
+                    findNavController().navigate(action)
+                }
+
+                binding.btnPay.setOnClickListener {
+                    val action = MainFragmentDirections.actionMainFragmentToPayFragment(user.userId)
+                    findNavController().navigate(action)
+                }
+
+                binding.btnLogout.setOnClickListener {
                     mainViewModel.logout()
                 }
             } else {
                 findNavController().navigate(MainFragmentDirections.actionUnauthorised())
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.refreshUserData()
     }
 }

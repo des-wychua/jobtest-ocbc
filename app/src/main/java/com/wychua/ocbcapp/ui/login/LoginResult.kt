@@ -1,4 +1,4 @@
-package com.wychua.ocbcapp
+package com.wychua.ocbcapp.ui.login
 
 import com.wychua.ocbcapp.data.model.User
 
